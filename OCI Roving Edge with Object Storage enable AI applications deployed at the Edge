@@ -1,0 +1,81 @@
+OCI Roving Edge with Object Storage enable AI applications deployed at the Edge
+
+Created by Marek Kratky, last updated on Oct 25, 2024  4 minute read
+In this year Accenture/Oracle Mastermind 2024 Innovation contest the team "GenAI on Roving Edge" worked on the exciting topic of bringing AI to the edge. It was a privilege to take part in this Oracle-Accenture collaboration positioning OCI Roving Edge for a range of AI applications. 
+
+Lack of stable internet access limits cloud computing effectiveness. Users need Edge AI capabilities in remote and disconnected locations to support the rapidly developing trend of AI Everywhere. Including using AI at the Edge including On-Device AI (smartphones), Autonomous Robots, Cars
+
+OCI Roving Edge brings secure computing directly to remote locations with limited internet, ideal for real-time processing in mission-critical applications like video analysis and emergency response. It goes beyond traditional uses, enabling deployment of AI and machine learning for autonomous systems, first responders, military, logistics, precision agriculture, vegetation management, and other - all directly on the edge device. Data captured by the Roving Edge device seamlessly flows to your OCI region for deeper analysis. Object Storage is a key component of all solutions and enables to seamlessly synchronise data from the edge device to an OCI region.
+
+Youtube: OCI Roving Edge Infrastructure
+
+Our solution is a distributed architecture with General Purpose and Inferential AI applications deployed at the Edge. LLMs are trained on massive GPU clusters at data centers. Small Language Models that have been trained in large compute in data centers are deployed at the Edge. Inferential AI is performed at the Edge
+
+Our Solution leverages Oracle Cloud Roving Edge to train and operate an SLM (Small Language Model) GenAI application air gapped from public internet and trained within a corporate internal network behind the corporate firewall (in our case at the Accenture GenAI Lab in Chicago). 
+
+The prototype solution also uses OCI GenAI service in the Oracle Cloud datacenter in Chicago.   The prototype provides consistent results from GenAI natural language queries of corporate information without hallucinations or creative transformations.
+
+The prototype demonstrates the use of Edge computing Oracle Cloud Infrastructure to create a GenAI trained on corporate data stored in OCI Object Storage, to produce consistently correct responses to natural language queries with low randomness (no hallucinations) so the application can be used as a corporate knowledge base and in effect an “Enterprise Search tool on steroids.”  Consistent trusted results tagged with cited information source or link to data in OCI Object Storage.
+
+
+
+Here is the technical architecture diagram we developed for our prototype. 
+
+On the left Oracle Roving Edge Ultra is synced with the OCI Master Region in Chicago
+
+Includes Corsight Facial Recognition software, video capture and drone controller software
+
+Starlink Satellite for internet access,
+
+Python, Go, Cohere, OpenAI, AI Vision, Autonomous Database, Apex
+
+And integration multiple cloud tenancies with NATS
+
+Hybrid Infrastructure integrated with a OCI Roving Edge device with multiple cloud tenancies in OCI and Azure.
+
+We used Python scripts to and create Go chatbot to interact with a Cohere LLM as a proof of concept
+
+Cohere is currently not supported at the Edge but Llama2 and Grok can be installed and used in a disconnected state.
+
+Edge devices are great for inferential AI not for training large language models.   LLMs should be trained in large cloud GPU compute clusters.   Edge used for local processing
+
+
+
+Example: Vegetation Management is a big concern for many Energy and Utility companies. Regulations require that utilities trim back encroaching growth next to power lines.
+
+Here is a demo of Roving Edge device with software controlling a drone taking pictures in the Innovation Lab
+
+
+
+As an example, we sent the drone outside to take pictures of trees in the field
+
+Images are sync’d from the drone to the Edge device and then synchronized to Object Storage in OCI Chicago region.
+
+
+
+
+
+
+
+Generative AI Search tool with RAG in Visual Builder
+
+ OCI Vision analyze and vector categorize images and documents we uploaded to the OCI Chicago region from the Edge
+
+Here we asked the search tool to check "if there are any pictures with trees growing trough power lines"
+
+
+
+Edge is an emerging technology supporting AI Everywhere
+
+1)Edge solutions can impact many industries
+
+2)Rapid growth in Edge computing with estimates of over 30% annual growth over the next few years
+
+3)50% of the world’s population lacks internet access, with 8B people currently living on earth, this technology could impact up to 4B people
+
+Our solution leverages many software and hardware components in new and innovative ways.
+
+Edge devices from Oracle are available for demonstration at the Oracle Innovation Lab and Solution Centers today
+
+Edge is an emerging technology extending the Cloud Continuum and supporting AI Everywhere. 
+
