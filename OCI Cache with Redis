@@ -1,0 +1,72 @@
+OCI Cache with Redis
+
+Created by Marek Kratky, last updated on May 29, 2024  3 minute read
+Oracle Cloud Infrastructure (OCI) Cache with Redis is a fully managed service that provides a highly available and scalable Redis-based caching solution. Redis is an open-source, in-memory data structure store, used as a database, cache, and message broker. OCI Cache with Redis leverages the speed and efficiency of Redis while offering the benefits of OCI's infrastructure.
+
+Key Features of OCI Cache with Redis
+Fully Managed Service: OCI Cache with Redis is a managed service, which means Oracle takes care of the infrastructure, maintenance, and updates, allowing you to focus on your application development.
+
+High Performance: Redis is known for its high performance due to its in-memory data storage, making it ideal for applications requiring fast data access and real-time processing.
+
+Scalability: The service can scale to handle large amounts of data and high request rates, ensuring that it can meet the demands of your applications as they grow.
+
+High Availability: OCI Cache with Redis offers built-in high availability with automatic failover, ensuring your cache remains accessible even in the event of node failures.
+
+Competitive pricing: OCI Cache with Redis is priced based on the amount of memory you use, so you only pay for what you need.
+Use Cases for OCI Cache with Redis
+Session Management: Store user session data to improve the performance and responsiveness of web applications.
+Caching: Cache frequently accessed data to reduce the load on databases and backend services, improving application response times.
+
+
+Ref: 
+
+Managing clusters https://docs.oracle.com/en-us/iaas/Content/redis/managingredisclusters.htm#managingredisclusters
+Connecting to a cluster https://docs.oracle.com/en-us/iaas/Content/redis/connecttorediscluster.htm#connecttorediscluster
+Cluster metrics https://docs.oracle.com/en-us/iaas/Content/redis/redismetrics.htm#redismetrics
+
+Connecting to a Cluster
+Cache with Redis provides access to a cluster over a private endpoint.
+
+With private endpoints (https://docs.oracle.com/iaas/Content/Network/Concepts/privateaccess.htm#private-endpoints), traffic doesn't go over the internet. You can only connect to the cluster from a client within the same VCN as the cluster or another VCN with appropriate gateways and route rules configured.
+
+Ways to connect to a cluster:
+
+Redis CLI version 7 is recommended, see Connecting with the Redis CLI.https://docs.oracle.com/en-us/iaas/Content/redis/connecttorediscluster.htm#connecttorediscluster__connectrediscli
+Using GUI such as RedisInsight or Redis Commander
+Deploying RedisInsight GUI on OCI with Container Instances
+This guide will walk you through deploying RedisInsight on Oracle Cloud Infrastructure (OCI) using Container Instances.
+
+For detailed instructions on creating container instances on OCI, refer to the Container Instances documentation.https://docs.oracle.com/en-us/iaas/Content/container-instances/creating-a-container-instance.htm
+
+Step-by-Step Guide
+1. Create a Container Instance
+First, you need to create a container instance on OCI. When setting this up, ensure that you place the container instance in the same Virtual Cloud Network (VCN) and private subnet where your Redis cluster is running. This setup will allow seamless communication between RedisInsight and your Redis cluster.
+
+2. Configure the RedisInsight Container
+Next, configure the RedisInsight container with the following settings:
+
+External Registry
+Registry hostname: docker.io
+Repository: redis/redisinsight
+Tag: latest
+3. Adjust Security Settings
+To access the RedisInsight GUI, you need to add a rule to your VCN security list to allow traffic on port 5540. This rule is crucial for enabling external access to the RedisInsight interface.
+
+4. Access the RedisInsight GUI
+Once your container instance is created and running, you can access the RedisInsight GUI through your web browser.
+
+Use the following URL format, replacing <container instance IP> with the actual IP address of your container instance:
+
+http://<container instance IP>:5540/
+
+
+
+5. Connect to Your Redis Database
+In the RedisInsight GUI, you can add a new Redis database. Use the Primary endpoint URL of your Redis cluster. Additionally, make sure to check the "Use TLS" checkbox to ensure a secure connection.
+
+By following these steps, you'll have a fully functional RedisInsight GUI running on OCI, providing you with an intuitive interface to manage and monitor your Redis databases effectively.
+
+
+
+
+
