@@ -1,0 +1,92 @@
+Apache Flink integration with OCI Object Storage
+Created by Marek Kratky, last updated on Nov 14, 2025  2 minute read
+
+Apache Flink is a framework and distributed processing engine for stateful computations over unbounded and bounded data streams. 
+
+Apache Flink uses file systems to consume and persistently store data, both for the results of applications and for fault tolerance and recovery. These are some of most of the popular file systems, including local, hadoop-compatible, Amazon S3, Aliyun OSS and Azure Blob Storage. See https://nightlies.apache.org/flink/flink-docs-release-2.1/docs/deployment/filesystems/overview/ for more details. 
+
+
+
+
+OCI Object Storage is not listed as the Apache Flink supported file system however it can be integrated using Amazon S3 compatibility or HDFS Connector interfaces.  
+
+Apache Flink Amazon S3 configuration is described here: https://nightlies.apache.org/flink/flink-docs-master/docs/deployment/filesystems/s3/
+
+OCI Object Storage S3 support is described in this doc: https://docs.oracle.com/en-us/iaas/Content/Object/Tasks/s3compatibleapi.htm
+
+
+
+
+OCI Object Storage S3 endpoint is provided in 2 styles and both are applicable in this scenario:
+
+Virtual host style URL: https://vhcompat.objectstorage.<region>.oci.customer-oci.com
+or
+Path style access: https://<namespace>.compat.objectstorage.<region>.oci.customer-oci.com
+
+ 
+
+S3 access and secret key are required:
+
+We can generate the access and secret key for a specific OCI user under Tokens and Keys -> Customer secret keys
+
+https://docs.public.content.oci.oraclecloud.com/en-us/iaas/Content/Identity/access/to_create_a_Customer_Secret_key.htm
+
+ 
+
+This OCI user needs to be in a group which is allowed to manage the objects in the bucket by IAM policy:
+
+https://docs.oracle.com/en-us/iaas/Content/Security/Reference/objectstorage_security.htm#iam-policies
+
+
+
+
+Step-by-step guide
+
+The following steps are involved in setting up the Apache Flink file system using S3 interface
+
+ download the latest binary release of Flink, then extract the archive
+Inside the flink directory:
+mkdir ./plugins/s3-fs-hadoop  
+cp ./opt/flink-s3-fs-hadoop-2.1.1.jar ./plugins/s3-fs-hadoop/
+Edit the conf/config.yaml with the following settings:
+
+s3.access-key: my_access_key
+s3.secret-key: my_secret_key
+s3.endpoint: https://<namespace>.compat.objectstorage.<region>.oci.customer-oci.com
+s3.path.style.access: true
+
+execution:
+  checkpointing:
+    interval: 3min
+    externalized-checkpoint-retention: RETAIN_ON_CANCELLATION
+    max-concurrent-checkpoints: 1
+    min-pause: 0
+    mode: EXACTLY_ONCE
+    timeout: 10min
+    tolerable-failed-checkpoints: 0
+    unaligned: false
+    incremental: false
+    dir: s3://flink/checkpoints/
+    savepoint-dir: s3://flink/savepoints/
+
+Create a bucket called e.g. “flink” in your tenancy
+Start the cluster ./bin/start-cluster.sh
+Run the sample application ./bin/flink run examples/streaming/WordCount.jar
+Check the "flink" bucket and there should be following objects created: 
+
+Buckets
+  Flink
+    Objects
+      chekpoints/.../
+        shared/
+        taskowned
+      
+
+
+
+TODO: The following steps are involved in setting up the Apache Flink file system using HDFS interface
+
+
+
+
+Note: Flink is also available as a Docker image. These steps for integration with OCI Object Storage are also applicable for the Docker image. 
