@@ -1,0 +1,68 @@
+Estimating Block and File backup size on OCI
+
+Created by Marek Kratky on Mar 26, 2026  2 minute read
+OCI provides native backup capabilities including geo replication for Block and File services.
+
+This article describes how to estimate “backup footprint” for OCI Block and File native backups. 
+
+In general when calculating the backup size we use the following main inputs:
+
+Protected data size (GB) 
+Average daily data growth rate (fraction (%) of protected data size/day) (optional, for longer horizons)
+Daily change rate captured by incremental fraction (%) of protected data size/day
+Effective reduction factor (compression and deduplication)
+Backup schedule: the frequency and retention of Full and Incremental backups (Incremental backup: each backup contains only the changes since the previous backup e.g., since yesterday’s incremental.)
+
+
+The OCI native backup capabilities don't utilise any compression and deduplication so we will ignore it in our calculations.
+
+Many 3rd party backup solutions use compression and deduplication and if this is required we can propose for example Commvault which is available in OCI Marketplace and the license cost could be offset by storage efficiency gains.
+
+
+
+We will calculate a “backup factor“ which we can use to multiply the Protected data size (GB) and get an estimate of the storage required for backups in the steady state month. (During the retention period the backup size will continue growing and after the retention period it s at steady-state)
+
+For our calculation we make the following assumptions: 
+
+Month ≈ 4.3 weeks (30 days), year ≈ 52.14 weeks
+everything is at steady-state 
+zero growth rate
+zero compression and deduplication
+
+
+Example calculation:
+
+protected data size (GB) = 100 GB
+daily change rate = 0.2% = 0.002
+backup schedule:
+Backup Schedule
+
+Retention Period
+
+Incremental backup - Daily (Mo-Th)
+
+1 Month
+
+Full backup - Weekly (Fr)
+
+3 Months
+
+Full backup - Monthly (last weekend of the month)
+
+12 Months
+
+
+
+number of weekly full backups for 3 month = 4.3 weeks * 3 month = 12.9
+
+number of monthly full backups for 12 month = 12
+
+monthly contribution of the daily incremental backups =  30 days * 4/7 (Mo-Th) *  0.002 daily change rate = 0.034
+
+Backup factor F ≈ 12.9 (weekly full backups for 3 month) + 12  (monthly full for 12 month) + 30⋅4/7⋅0.002 (daily incremental Mo-Th)  ⇒ F≈24.934
+
+Backup size ≈ protected data size (GB) * F = 100 GB * 24.934 = 2,493.4 GB 
+
+
+
+NOTE: In case the geo replication (backups are replicated to a secondary OCI region) is also used we need to double the total backup size and also consider the data transfer costs between the regions. 
